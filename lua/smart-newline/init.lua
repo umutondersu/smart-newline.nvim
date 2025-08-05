@@ -33,7 +33,7 @@ M.newline = function()
 		local before_cursor = line:sub(1, col):gsub("%s*$", "")
 		local after_cursor = line:sub(col + 1):gsub("^%s*", "")
 		vim.cmd("startinsert")
-		local lines = { before_cursor, inner_indent .. " ", after_cursor }
+		local lines = { before_cursor, inner_indent .. " ", indent .. after_cursor }
 		vim.api.nvim_buf_set_lines(0, row - 1, row, false, lines)
 		vim.api.nvim_win_set_cursor(0, { row + 1, #inner_indent })
 	elseif inside_tag then
