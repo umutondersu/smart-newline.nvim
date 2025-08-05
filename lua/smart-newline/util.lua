@@ -51,6 +51,7 @@ M.is_inside_tag = function()
 	local after = line:sub(col + 1)
 
 	-- Case 1: Check if cursor is inside a tag (like <div class="|">)
+	-- Only return true if there's a corresponding closing tag on the same line
 	-- Find the last < before cursor
 	local last_open = before:match(".*()<")
 	if last_open then
@@ -63,7 +64,26 @@ M.is_inside_tag = function()
 
 			-- If no closing > between, we're inside a tag
 			if not has_close_between then
-				return true
+				-- Check if this is a self-closing tag by looking for /> pattern
+				local tag_content = before:sub(last_open + 1) .. after:sub(1, first_close - 1)
+				if tag_content:match("/%s*$") then
+					-- This is a self-closing tag, return false
+					return false
+				end
+
+				-- Extract the tag name to check for corresponding closing tag
+				local tag_name = tag_content:match("^%s*([%w%-]+)")
+				if tag_name then
+					-- Look for the closing tag after this opening tag on the same line
+					local after_opening_tag = after:sub(first_close + 1)
+					local closing_pattern = "</%s*" .. tag_name .. "%s*>"
+					if after_opening_tag:match(closing_pattern) then
+						return true
+					end
+				end
+
+				-- No corresponding closing tag found, return false
+				return false
 			end
 		end
 	end

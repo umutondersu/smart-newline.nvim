@@ -4,7 +4,8 @@ local M = {}
 ---@class options
 ---@field bracket_pairs table<string, string> Pairs of brackets to consider for smart newline behavior
 ---@field trigger string Key to trigger the smart newline behavior
----@field html_tags boolean Whether to consider HTML tags for smart newline behavior
+---@field html_tags table<string, boolean> Whether to consider HTML tags for smart newline behavior
+---@field brackets table<string, boolean> Pairs of brackets to consider for smart newline behavior
 M.options = {}
 
 ---@type options
@@ -14,8 +15,9 @@ local defaults = {
 		{ "[", "]" },
 		{ "(", ")" }
 	},
-	trigger = "o",
-	html_tags = true,
+	trigger = "W",
+	html_tags = { enabled = true },
+	brackets = { enabled = true }
 }
 
 ---@param options options|nil
