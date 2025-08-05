@@ -13,12 +13,13 @@ M.newline = function()
 	local inside_brackets = util.is_inside_brackets() and config.options.brackets.enabled
 
 	if not (inside_brackets or inside_tag) then
-		vim.notify('outside brackets')
-		vim.api.nvim_feedkeys(
-			vim.api.nvim_replace_termcodes(config.options.trigger, true, false, true),
-			'n',
-			false
-		)
+		if config.options.trigger then
+			vim.api.nvim_feedkeys(
+				vim.api.nvim_replace_termcodes(config.options.trigger, true, false, true),
+				'n',
+				false
+			)
+		end
 		return
 	end
 
