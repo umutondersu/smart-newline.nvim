@@ -2,12 +2,18 @@
 local M = {}
 
 ---@class options
----@field enabled boolean Enable or disable the plugin
+---@field bracket_pairs table<string, string> Pairs of brackets to consider for smart newline behavior
+---@field trigger string Key to trigger the smart newline behavior
 M.options = {}
 
 ---@type options
 local defaults = {
-	enabled = false,
+	bracket_pairs = {
+		{ "{", "}" },
+		{ "[", "]" },
+		{ "(", ")" }
+	},
+	trigger = "o"
 }
 
 ---@param options options|nil
