@@ -78,5 +78,4 @@ M.newline = function()
 	end
 end
 
-
 return M
