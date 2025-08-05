@@ -9,6 +9,7 @@ M.is_inside_brackets = function()
 
 	local before = line:sub(1, col)
 	local after = line:sub(col + 1)
+	local char_at_cursor = col < #line and line:sub(col + 1, col + 1) or ""
 
 	-- Check for each bracket type
 	local bracket_pairs = config.options.bracket_pairs
@@ -16,7 +17,16 @@ M.is_inside_brackets = function()
 	for _, pair in ipairs(bracket_pairs) do
 		local open_char, close_char = pair[1], pair[2]
 
-		-- Find the last opening bracket before cursor
+		-- Special case: Check if cursor is on an opening bracket
+		if char_at_cursor == open_char then
+			-- Find the first closing bracket after cursor
+			local first_close = after:match("()%" .. close_char)
+			if first_close then
+				return true, pair
+			end
+		end
+
+		-- Find the last opening bracket before cursor (including at cursor position)
 		local last_open = before:match(".*()%" .. open_char)
 		if last_open then
 			-- Find the first closing bracket after cursor
@@ -28,13 +38,13 @@ M.is_inside_brackets = function()
 
 				-- If no closing bracket between, we're inside this bracket pair
 				if not has_close_between then
-					return true
+					return true, pair
 				end
 			end
 		end
 	end
 
-	return false
+	return false, nil
 end
 
 M.is_inside_tag = function()
