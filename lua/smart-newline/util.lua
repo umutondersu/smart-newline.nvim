@@ -50,22 +50,44 @@ M.is_inside_tag = function()
 	local before = line:sub(1, col)
 	local after = line:sub(col + 1)
 
-	-- Case 1: Check if cursor is inside a tag (like <div class="|">)
+	-- Case 1: Check if cursor is inside a closing tag (like </div|>)
+	-- Find the last < before cursor that starts a closing tag
+	local closing_tag_start = before:match(".*()</%s*[%w%-]*$")
+	if closing_tag_start then
+		-- Find the first > after cursor
+		local first_close = after:match("()>")
+		if first_close then
+			-- Extract the tag name from the closing tag
+			local closing_tag_content = before:sub(closing_tag_start + 1) .. after:sub(1, first_close - 1)
+			local tag_name = closing_tag_content:match("^%s*/%s*([%w%-]+)")
+
+			if tag_name then
+				-- Look for the corresponding opening tag before this closing tag on the same line
+				local before_closing_tag = before:sub(1, closing_tag_start - 1)
+				local opening_pattern = "<" .. tag_name .. "[^>]*>"
+				if before_closing_tag:match(opening_pattern) then
+					return true
+				end
+			end
+		end
+	end
+
+	-- Case 2: Check if cursor is inside an opening tag (like <div class="|">)
 	-- Only return true if there's a corresponding closing tag on the same line
-	-- Find the last < before cursor
-	local last_open = before:match(".*()<")
-	if last_open then
+	-- Find the last < before cursor that is NOT a closing tag
+	local opening_tag_start = before:match(".*()<[^/]")
+	if opening_tag_start then
 		-- Find the first > after cursor
 		local first_close = after:match("()>")
 		if first_close then
 			-- Check if there's a closing > between the < and cursor
-			local between = before:sub(last_open + 1)
+			local between = before:sub(opening_tag_start + 1)
 			local has_close_between = between:match(">")
 
 			-- If no closing > between, we're inside a tag
 			if not has_close_between then
 				-- Check if this is a self-closing tag by looking for /> pattern
-				local tag_content = before:sub(last_open + 1) .. after:sub(1, first_close - 1)
+				local tag_content = before:sub(opening_tag_start + 1) .. after:sub(1, first_close - 1)
 				if tag_content:match("/%s*$") then
 					-- This is a self-closing tag, return false
 					return false
@@ -88,7 +110,7 @@ M.is_inside_tag = function()
 		end
 	end
 
-	-- Case 2: Check if cursor is between opening and closing tags (like <button>|</button>)
+	-- Case 3: Check if cursor is between opening and closing tags (like <button>|</button>)
 	-- Find the last > before cursor (end of opening tag)
 	local last_tag_end = before:match(".*()>")
 	if last_tag_end then
