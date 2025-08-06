@@ -10,31 +10,28 @@ M.options = {}
 
 ---@type options
 local defaults = {
-	bracket_pairs = {
-		{ "{", "}" },
-		{ "[", "]" },
-		{ "(", ")" }
-	},
-	trigger = "o",
-	html_tags = { enabled = true },
-	brackets = { enabled = true }
+    bracket_pairs = {
+        { "{", "}" },
+        { "[", "]" },
+        { "(", ")" },
+    },
+    trigger = "o",
+    html_tags = { enabled = true },
+    brackets = { enabled = true },
 }
 
 ---@param options options|nil
 function M.setup(options)
-	M.options = vim.tbl_deep_extend("force", {}, defaults, options or {})
-	if M.options.trigger then
-		vim.keymap.set(
-			"n",
-			M.options.trigger,
-			function() require("smart-newline").newline() end,
-			{ noremap = true, silent = true }
-		)
-	else
-		vim.api.nvim_create_user_command('Smartnewline', function()
-			require("smart-newline").newline()
-		end, {})
-	end
+    M.options = vim.tbl_deep_extend("force", {}, defaults, options or {})
+    if M.options.trigger then
+        vim.keymap.set("n", M.options.trigger, function()
+            require("smart-newline").newline()
+        end, { noremap = true, silent = true })
+    else
+        vim.api.nvim_create_user_command("Smartnewline", function()
+            require("smart-newline").newline()
+        end, {})
+    end
 end
 
 return M
