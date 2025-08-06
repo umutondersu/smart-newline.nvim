@@ -6,17 +6,7 @@ A Neovim plugin that provides intelligent newline insertion with proper indentat
 
 ## Purpose 🎯
 
-This plugin enhances your coding experience by automatically creating properly indented newlines when you're inside brackets or HTML tags, saving you from manual formatting. ⚡
-
-## Table of Contents 📖
-
-- [Introduction](#introduction-)
-- [Purpose](#purpose-)
-- [Requirements](#requirements-)
-- [Features](#features-)
-- [Installation](#installation-)
-- [Configuration](#configuration-)
-- [Usage](#usage-)
+This plugin enhances your coding experience by automatically creating properly indented newlines when you're inside or around brackets and HTML tags, saving you from formatting and keeping your flow. ⚡
 
 ## Requirements ⚡️
 
@@ -24,11 +14,11 @@ This plugin enhances your coding experience by automatically creating properly i
 
 ## Features 🌟
 
-- **Smart bracket handling** 🔧: Automatically formats newlines inside `{}`, `[]`, and `()` brackets
+- **Smart bracket handling** 🔧: Formats newlines inside `{}`, `[]`, and `()`, and other custom brackets
 - **HTML tag support** 🏷️: Intelligent newline insertion between opening and closing HTML tags
 - **Proper indentation** 📐: Maintains consistent indentation based on your buffer settings
-- **Configurable trigger** ⚙️: Customize the key binding to activate smart newline
 - **Flexible configuration** 🎛️: Enable/disable bracket or HTML tag features independently
+- **Fallback behavior🔙**: Falls back to normal trigger key behavior when not applicable
 
 ## Installation 📦
 
@@ -65,7 +55,7 @@ return {
   keys = {
     {
       '<leader>o'
-      function() require("Smart-newline").newline() end,
+      function() require("smart-newline").newline() end,
       desc = "Smart Newline"
     }
   }
@@ -94,16 +84,52 @@ require("smart-newline").setup({
 - `html_tags.enabled`: Enable/disable HTML tag smart newline
 - `brackets.enabled`: Enable/disable bracket smart newline
 
-## Usage 🚀
+## Showcase 📖
 
-1. Position your cursor inside empty brackets `{}`, `[]`, or `()`
-2. Press the trigger key (default: `o` in normal mode)
-3. The plugin will create a properly indented newline structure
+### Bracket Newlines 🔧
 
-For HTML tags:
+**Before**
 
-1. Position your cursor between opening and closing tags: `<div>|</div>`
-2. Press the trigger key
-3. Get properly formatted HTML structure with indentation
+```javascript
+function example() {|}
+```
 
-The plugin automatically detects your indentation settings (tabs vs spaces, indent size) and applies them consistently.
+**After**
+
+```javascript
+function example() {
+    |
+}
+```
+
+### HTML Tag Newlines 🏷️
+
+**Before**
+
+```html
+<div>|</div>
+```
+
+**After**
+
+```html
+<div>
+  |
+</div>
+```
+
+**Works inside tag attributes too:**
+
+**Before**
+
+```html
+<div clas|s="example"></div>
+```
+
+**After**
+
+```html
+<div class="example">
+  |
+</div>
+```
