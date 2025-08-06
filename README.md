@@ -8,6 +8,20 @@ A Neovim plugin that provides intelligent newline insertion with proper indentat
 
 This plugin enhances your coding experience by automatically creating properly indented newlines when you're inside brackets or HTML tags, saving you from manual formatting. ⚡
 
+## Table of Contents 📖
+
+- [Introduction](#introduction-)
+- [Purpose](#purpose-)
+- [Requirements](#requirements-)
+- [Features](#features-)
+- [Installation](#installation-)
+- [Configuration](#configuration-)
+- [Usage](#usage-)
+
+## Requirements ⚡️
+
+- Neovim >=0.10
+
 ## Features 🌟
 
 - **Smart bracket handling** 🔧: Automatically formats newlines inside `{}`, `[]`, and `()` brackets
@@ -16,10 +30,12 @@ This plugin enhances your coding experience by automatically creating properly i
 - **Configurable trigger** ⚙️: Customize the key binding to activate smart newline
 - **Flexible configuration** 🎛️: Enable/disable bracket or HTML tag features independently
 
-## Installation (using lazy.nvim)
+## Installation 📦
+
+### 💤 [Lazy.nvim](https://github/folke/lazy.nvim)
 
 ```lua
-{
+return {
   "umutondersu/smart-newline.nvim",
   event = "BufReadPost",
   opts = {}
@@ -29,7 +45,7 @@ This plugin enhances your coding experience by automatically creating properly i
 If you do not want to override a key you can install without the trigger
 
 ```lua
-{
+return {
   "umutondersu/smart-newline.nvim",
   cmd = "Smartnewline",
   opts = {
@@ -41,7 +57,7 @@ If you do not want to override a key you can install without the trigger
 Or
 
 ```lua
-{
+return {
   "umutondersu/smart-newline.nvim",
   opts = {
     trigger = nil
@@ -56,7 +72,7 @@ Or
 }
 ```
 
-## Configuration
+## Configuration ⚙️
 
 The plugin comes with sensible defaults but can be customized:
 
@@ -73,14 +89,12 @@ require("smart-newline").setup({
 })
 ```
 
-### Configuration Options
-
 - `bracket_pairs`: Array of bracket pairs to handle
 - `trigger`: Key binding to activate smart newline functionality
 - `html_tags.enabled`: Enable/disable HTML tag smart newline
 - `brackets.enabled`: Enable/disable bracket smart newline
 
-## Usage
+## Usage 🚀
 
 1. Position your cursor inside empty brackets `{}`, `[]`, or `()`
 2. Press the trigger key (default: `o` in normal mode)
