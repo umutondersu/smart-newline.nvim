@@ -1,3 +1,7 @@
+<a href="https://dotfyle.com/plugins/umutondersu/smart-newline.nvim">
+	<img src="https://dotfyle.com/plugins/umutondersu/smart-newline.nvim/shield?style=flat" />
+</a>
+
 # smart-newline.nvim ✨
 
 ## Introduction 🚀
